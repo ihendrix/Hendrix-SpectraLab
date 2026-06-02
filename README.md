@@ -6,6 +6,14 @@
 
 [Open Hendrix SpectraLab](https://hendrix-spectralab-agoftmmlzwugjr9vmuv4yh.streamlit.app/)
 
+## Demo Data
+
+A synthetic demo CSV is included for testing:
+
+`examples/sample_spectra_demo.csv`
+
+This file uses anonymized sample names such as `sample.1`, `sample.2`, and so on. The absorbance values are synthetic and are included only so users can test the app without needing private lab data.
+
 ## What It Does
 
 Hendrix SpectraLab turns raw UV-Vis CSV exports into an interactive analysis dashboard. Users can upload a spectra file, automatically detect sample curves, filter wavelength ranges, compare absorbance curves, calculate peak absorbance metrics, and download processed results.
