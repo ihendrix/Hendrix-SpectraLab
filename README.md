@@ -1,25 +1,23 @@
-# Hendrix-SpectraLab
-Portable UV-Vis absorbance analysis software for comparing sample spectra, identifying peak wavelengths, flagging saturated readings, and exporting research-ready metrics.
+# Hendrix SpectraLab
+
+Portable UV-Vis absorbance analysis software for experimental research workflows.
+
+## What it does
+Hendrix SpectraLab converts raw UV-Vis CSV exports into interactive spectra comparisons, peak wavelength metrics, QC flags, and downloadable research-ready summaries.
 
 ## Features
-
-- Upload UV-Vis CSV files
+- Upload UV-Vis CSV exports
 - Automatically detect sample spectra
 - Search and select samples
-- Plot absorbance curves
-- Smooth noisy curves
-- Normalize spectra
+- Filter wavelength range
+- Compare absorbance curves interactively
 - Calculate peak wavelength and absorbance metrics
-- Flag saturated readings when absorbance values are ≥ 9.9
-- Export summary tables and selected data
+- Flag potentially saturated readings
+- Export metrics as CSV or Excel
 
-## How to Run
+## Tech Stack
+Python, Streamlit, pandas, NumPy, Plotly, openpyxl
 
-Install dependencies:
-
-```bash
+## Run Locally
 pip install -r requirements.txt
-
-Run the app:
-
 streamlit run app.py
