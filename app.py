@@ -626,11 +626,9 @@ with m5:
 # ============================================================
 # Selected sample summary panel
 # ============================================================
-st.markdown('<div class="soft-panel">', unsafe_allow_html=True)
 st.markdown('<div class="section-label">Current Selection</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-title">Selected Samples</div>', unsafe_allow_html=True)
 render_sample_pills(selected_samples, max_show=18)
-st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================================================
 # Tabs
