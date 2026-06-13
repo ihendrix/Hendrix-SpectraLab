@@ -224,9 +224,8 @@ st.markdown(
 )
 
 # ============================================================
-# Upload CSV / demo data / live app link
+# Upload CSV / demo data
 # ============================================================
-LIVE_APP_URL = "https://hendrix-spectralab-agoftmmlzwugjr9vmuv4yh.streamlit.app/"
 DEMO_CSV_PATH = Path(__file__).resolve().parent / "sample_spectra_demo.csv"
 
 if "use_demo_csv" not in st.session_state:
@@ -234,7 +233,7 @@ if "use_demo_csv" not in st.session_state:
 
 st.markdown('<div class="section-label">Start an Analysis</div>', unsafe_allow_html=True)
 
-upload_col, demo_col, live_col = st.columns([2.2, 1.05, 1.05])
+upload_col, demo_col = st.columns([2.4, 1.1])
 
 with upload_col:
     uploaded_file = st.file_uploader(
@@ -265,14 +264,6 @@ with demo_col:
         )
     else:
         st.caption("Add sample_spectra_demo.csv to the app folder to enable demo data.")
-
-with live_col:
-    st.markdown("**Live application**")
-    st.link_button(
-        "Open Live App ↗",
-        LIVE_APP_URL,
-        use_container_width=True
-    )
 
 if uploaded_file is not None:
     st.session_state.use_demo_csv = False
@@ -1088,3 +1079,5 @@ with tab5:
             - suggest next steps for lab review
             """
         )
+
+# Build: external launch section removed
