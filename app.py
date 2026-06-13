@@ -1,4 +1,6 @@
 import re
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
@@ -222,18 +224,67 @@ st.markdown(
 )
 
 # ============================================================
-# Upload CSV
+# Upload CSV / demo data / live app link
 # ============================================================
-uploaded_file = st.file_uploader(
-    "Upload your UV-Vis CSV file",
-    type=["csv"]
-)
+LIVE_APP_URL = "https://hendrix-spectralab-agoftmmlzwugjr9vmuv4yh.streamlit.app/"
+DEMO_CSV_PATH = Path(__file__).resolve().parent / "sample_spectra_demo.csv"
 
-if uploaded_file is None:
-    st.info("Upload a CSV file to begin.")
+if "use_demo_csv" not in st.session_state:
+    st.session_state.use_demo_csv = False
+
+st.markdown('<div class="section-label">Start an Analysis</div>', unsafe_allow_html=True)
+
+upload_col, demo_col, live_col = st.columns([2.2, 1.05, 1.05])
+
+with upload_col:
+    uploaded_file = st.file_uploader(
+        "Upload your UV-Vis CSV file",
+        type=["csv"],
+        help="Upload a CSV exported from your UV-Vis instrument."
+    )
+
+with demo_col:
+    st.markdown("**Demo data**")
+
+    load_demo = st.button(
+        "Load Demo CSV",
+        use_container_width=True,
+        disabled=not DEMO_CSV_PATH.exists()
+    )
+
+    if load_demo:
+        st.session_state.use_demo_csv = True
+
+    if DEMO_CSV_PATH.exists():
+        st.download_button(
+            label="Download Demo CSV",
+            data=DEMO_CSV_PATH.read_bytes(),
+            file_name="sample_spectra_demo.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+    else:
+        st.caption("Add sample_spectra_demo.csv to the app folder to enable demo data.")
+
+with live_col:
+    st.markdown("**Live application**")
+    st.link_button(
+        "Open Live App ↗",
+        LIVE_APP_URL,
+        use_container_width=True
+    )
+
+if uploaded_file is not None:
+    st.session_state.use_demo_csv = False
+    df = pd.read_csv(uploaded_file, header=None)
+    data_source_name = uploaded_file.name
+elif st.session_state.use_demo_csv and DEMO_CSV_PATH.exists():
+    df = pd.read_csv(DEMO_CSV_PATH, header=None)
+    data_source_name = "sample_spectra_demo.csv"
+    st.success("Demo CSV loaded. Use the controls in the sidebar to explore the sample spectra.")
+else:
+    st.info("Upload a CSV file or select **Load Demo CSV** to begin.")
     st.stop()
-
-df = pd.read_csv(uploaded_file, header=None)
 
 # ============================================================
 # Detect samples
@@ -281,19 +332,44 @@ search_text = st.sidebar.text_input(
     placeholder="Example: 77, 81, 59"
 )
 
+def sample_name_matches(name, term):
+    """Return True only for an exact sample name or exact numeric suffix."""
+    normalized_name = str(name).strip().casefold()
+    normalized_term = str(term).strip().casefold()
+
+    if not normalized_term:
+        return False
+
+    # Full sample names must match exactly: sample.1 does not match sample.11.
+    if normalized_name == normalized_term:
+        return True
+
+    # Preserve convenient shorthand: "1" matches sample.1, but not sample.11.
+    if normalized_term.isdigit():
+        suffix_pattern = rf"(?:^|[._\-\s]){re.escape(normalized_term)}$"
+        return re.search(suffix_pattern, normalized_name) is not None
+
+    return False
+
+
 if search_text.strip():
     search_terms = [
-        term.strip().lower()
-        for term in re.split(r"[,\s]+", search_text)
+        term.strip()
+        for term in re.split(r"[,;\n]+", search_text)
         if term.strip()
     ]
 
     filtered_samples = [
         name for name in sample_names
-        if any(term in name.lower() for term in search_terms)
+        if any(sample_name_matches(name, term) for term in search_terms)
     ]
 else:
     filtered_samples = sample_names
+
+st.sidebar.caption(
+    "Exact matching is enabled. Enter `sample.1` or `1` to select only sample.1. "
+    "Separate multiple samples with commas."
+)
 
 auto_select_filtered = st.sidebar.checkbox(
     "Auto-select filtered samples",
