@@ -6,8 +6,8 @@ The app is designed for experimental workflows where researchers need to compare
 
 ## Live Demo
 
-[Open Hendrix SpectraLab
-]([url](https://hendrix-spectralab-agoftmmlzwugjr9vmuv4yh.streamlit.app/))
+[[Open Hendrix SpectraLab
+]([url](https://hendrix-spectralab-agoftmmlzwugjr9vmuv4yh.streamlit.app/))](https://hendrix-spectralab-agoftmmlzwugjr9vmuv4yh.streamlit.app/)
 ## Demo Data
 
 A synthetic demo CSV is included for testing:
