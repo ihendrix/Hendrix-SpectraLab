@@ -8,7 +8,8 @@ The app is designed for experimental workflows where researchers need to compare
 
 [[Open Hendrix SpectraLab
 ]([url](https://hendrix-spectralab-agoftmmlzwugjr9vmuv4yh.streamlit.app/))](https://hendrix-spectralab-agoftmmlzwugjr9vmuv4yh.streamlit.app/)
-Citation
+
+## Citation
 
 Hendrix, I. (2026).
 Hendrix SpectraLab (Version 1.0.0) [Computer software].
